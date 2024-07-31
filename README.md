@@ -3,8 +3,11 @@ Simple qr-code generator
 
 Сделано специально для генерации ссылки на сайтик с указанием текущей версии игры.
 
+```
 Usage: zx-qr-code [OPTIONS] --url <URL>
+```
 
+```
 Options:
   -o, --output <FILE>
           Output filename
@@ -25,3 +28,4 @@ Options:
   -V, --version
           Print version
 
+```

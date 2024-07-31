@@ -1,50 +1,14 @@
-use crate::config::{Config, OutputMode};
-use image::{GenericImage, ImageBuffer, Rgb};
-use qrcode::{Color, EcLevel, QrCode, Version};
+use crate::generator::defines::{BytesVector, MyImageBuffer};
+use image::Rgb;
+use qrcode::Color;
 use std::fs;
 use std::io::Write;
 
-type BytesVector = Vec<u8>;
-type MyImageBuffer = ImageBuffer<Rgb<u8>, BytesVector>;
-
-const QUADS_NORMALS: [[u32; 2]; 4] = [[0, 0], [1, 0], [0, 1], [1, 1]];
-
-pub fn generate(conf: &Config) {
-    // Encode some data into bits.
-    let code = QrCode::with_version(&conf.url, Version::Normal(3), EcLevel::L).unwrap();
-    let w: u32 = code.width() as u32;
-    println!("qr-code width: {:?}", w);
-    let image = generate_image(&code, conf.size, conf.size);
-    println!("saved path: {:?}", conf.output);
-    match conf.mode {
-        OutputMode::Image => {
-            image.save(&conf.output).unwrap();
-        }
-        OutputMode::Binary => save_binary(&image, &conf.output),
-    }
-}
-
-fn generate_image(code: &QrCode, w: u32, h: u32) -> MyImageBuffer {
-    let image_buf: MyImageBuffer = code
-        .render::<Rgb<u8>>()
-        .max_dimensions(1, 1)
-        .quiet_zone(false) // disable quiet zone (white border)
-        .build();
-    println!("image_buf size: {:?}", image_buf.dimensions());
-
-    let mut image: MyImageBuffer = ImageBuffer::new(w, h);
-    image.fill(255);
-    println!("image size: {:?}", image.dimensions());
-
-    image.copy_from(&image_buf, 1, 1).unwrap();
-    image
-}
-
-fn save_binary(img: &MyImageBuffer, output: &String) {
+pub fn save_binary(img: &MyImageBuffer, path: &String) {
     assert_eq!(
         img.width(),
         img.height(),
-        "Image {:?} must be equal {:?}",
+        "Image width {:?} and height {:?} must be equal",
         img.width(),
         img.height()
     );
@@ -54,7 +18,7 @@ fn save_binary(img: &MyImageBuffer, output: &String) {
     let mut out_vec = BytesVector::new();
     add_quads(&img, &mut out_vec);
 
-    let mut file = fs::File::create(output).unwrap();
+    let mut file = fs::File::create(path).unwrap();
     file.write_all(&out_vec.to_vec()).unwrap();
 }
 
