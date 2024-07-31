@@ -1,7 +1,6 @@
 extern crate core;
 
 mod args;
-mod config;
 mod generator;
 mod utils;
 

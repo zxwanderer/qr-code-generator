@@ -1,4 +1,3 @@
-use crate::config::*;
 use crate::utils::get_extension;
 use clap::{arg, Parser};
 
@@ -35,6 +34,12 @@ struct Args {
 				default_value_t = DEFAULT_SIZE
 	)]
     size: u32,
+}
+
+pub struct Config {
+    pub output: String,
+    pub url: String,
+    pub size: u32,
 }
 
 pub fn get_config_from_args() -> Result<Config, String> {
