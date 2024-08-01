@@ -39,7 +39,7 @@ fn add_byte(img: &MyImageBuffer, out_vec: &mut BytesVector, x: u32, y: u32) {
     // println!("----- Add byte {:?} {:}", x, y);
     let mut ret_b: u8 = 0;
     for pos_x in x..(x + 8_u32) {
-        match get_pixel(img, pos_x, y).unwrap() {
+        match get_pixel(img, pos_x, y.clone()).unwrap() {
             Color::Light => {}
             Color::Dark => {
                 ret_b |= 0b0000_0001;
@@ -53,7 +53,7 @@ fn add_byte(img: &MyImageBuffer, out_vec: &mut BytesVector, x: u32, y: u32) {
 fn add_8_bytes(img: &MyImageBuffer, out_vec: &mut BytesVector, x: u32, y: u32) {
     println!("---- Add 8 bytes {:?} {:}", x, y);
     for pos_y in y..(y + 8_u32) {
-        add_byte(img, out_vec, x, pos_y);
+        add_byte(img, out_vec, x.clone(), pos_y);
     }
 }
 
@@ -61,7 +61,12 @@ fn add_quad(img: &MyImageBuffer, out_vec: &mut BytesVector, pos_x: u32, pos_y: u
     println!("add_quad: {:?} {:?}", pos_x, pos_y);
     const QUAD_POS: [[u32; 2]; 4] = [[0, 0], [8, 0], [0, 8], [8, 8]];
     for iter in QUAD_POS.into_iter() {
-        add_8_bytes(img, out_vec, pos_x + iter[0], pos_y + iter[1]);
+        add_8_bytes(
+            img,
+            out_vec,
+            pos_x.clone() + iter[0].clone(),
+            pos_y.clone() + iter[1].clone(),
+        );
     }
 }
 
@@ -71,7 +76,7 @@ fn add_quads(img: &MyImageBuffer, out_vec: &mut BytesVector) {
     while pos_x < img.width() {
         let mut pos_y = 0;
         while pos_y < img.height() {
-            add_quad(img, out_vec, pos_x, pos_y);
+            add_quad(img, out_vec, pos_x.clone(), pos_y.clone());
             pos_y += 16;
         }
         pos_x += 16;
