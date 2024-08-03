@@ -1,4 +1,4 @@
-use crate::generator::defines::MyImageBuffer;
+use crate::defines::MyImageBuffer;
 use image::{GenericImage, ImageBuffer, Rgb};
 use qrcode::{EcLevel, QrCode, Version};
 

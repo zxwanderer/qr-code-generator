@@ -1,10 +1,8 @@
-use crate::generator::defines::{BytesVector, MyImageBuffer};
+use crate::defines::{BytesVector, MyImageBuffer};
 use image::Rgb;
 use qrcode::Color;
-use std::fs;
-use std::io::Write;
 
-pub fn save_binary(img: &MyImageBuffer, path: &String) {
+pub fn convert(img: &MyImageBuffer) -> BytesVector {
     assert_eq!(
         img.width(),
         img.height(),
@@ -17,9 +15,7 @@ pub fn save_binary(img: &MyImageBuffer, path: &String) {
 
     let mut out_vec = BytesVector::new();
     add_quads(&img, &mut out_vec);
-
-    let mut file = fs::File::create(path).unwrap();
-    file.write_all(&out_vec.to_vec()).unwrap();
+    out_vec
 }
 
 fn get_pixel(img: &MyImageBuffer, x: u32, y: u32) -> Result<Color, String> {

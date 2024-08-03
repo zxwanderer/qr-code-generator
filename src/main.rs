@@ -1,20 +1,23 @@
-extern crate core;
+use crate::args::get_config_from_args;
+use crate::generator::generate;
+use crate::utils::{get_extension, save_buffer};
 
 mod args;
+mod convert_to_u8;
+mod defines;
 mod generator;
 mod utils;
 
-use crate::args::get_config_from_args;
-use crate::generator::{generate, save_binary, save_image};
-use crate::utils::get_extension;
-
 fn main() {
     let conf = get_config_from_args().unwrap();
-    let buf = generate(&conf.url, conf.size);
+    let image_buf = generate(&conf.url, conf.size);
 
     let ext = get_extension(&conf.output).unwrap();
     match ext {
-        "bin" => save_binary(&buf, &conf.output),
-        &_ => save_image(&buf, &conf.output),
+        "bin" => {
+            let buffer = convert_to_u8::convert(&image_buf);
+            save_buffer(buffer, &conf.output).unwrap();
+        }
+        &_ => image_buf.save(&conf.output).unwrap(),
     }
 }
