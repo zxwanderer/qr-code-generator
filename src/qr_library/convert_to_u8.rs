@@ -1,9 +1,8 @@
-use crate::qr_library::defines::MyImageBuffer;
-use crate::qr_library::BytesVector;
+use crate::qr_library::defines::{BytesVector, MyImageBuffer};
 use image::Rgb;
 use qrcode::Color;
 
-pub fn convert(img: &MyImageBuffer) -> BytesVector {
+pub fn convert(img: &MyImageBuffer) -> Vec<u8> {
     assert_eq!(
         img.width(),
         img.height(),
