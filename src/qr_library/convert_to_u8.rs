@@ -1,4 +1,5 @@
-use crate::defines::{BytesVector, MyImageBuffer};
+use crate::qr_library::defines::MyImageBuffer;
+use crate::qr_library::BytesVector;
 use image::Rgb;
 use qrcode::Color;
 

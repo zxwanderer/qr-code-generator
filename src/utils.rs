@@ -1,4 +1,4 @@
-use crate::defines::BytesVector;
+use crate::qr_library::BytesVector;
 use std::ffi::OsStr;
 use std::fs;
 use std::io::Write;
@@ -12,7 +12,7 @@ pub fn get_extension(s: &str) -> Result<&str, String> {
     }
 }
 
-pub fn save_buffer(buffer: BytesVector, path: &String) -> Result<(), String> {
+pub fn save_buffer(buffer: &BytesVector, path: &String) -> Result<(), String> {
     let mut file = fs::File::create(path).unwrap();
     file.write_all(&buffer.to_vec()).unwrap();
     Ok(())

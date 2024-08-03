@@ -1,23 +1,22 @@
 use crate::args::get_config_from_args;
-use crate::generator::generate;
-use crate::utils::{get_extension, save_buffer};
 
 mod args;
-mod convert_to_u8;
-mod defines;
-mod generator;
+mod qr_library;
 mod utils;
+
+use crate::utils::get_extension;
+use qr_library::ZxQrCode;
 
 fn main() {
     let conf = get_config_from_args().unwrap();
-    let image_buf = generate(&conf.url, conf.size);
+    let my_qr = qr_library::generate(&conf.url, conf.size);
 
     let ext = get_extension(&conf.output).unwrap();
     match ext {
         "bin" => {
-            let buffer = convert_to_u8::convert(&image_buf);
-            save_buffer(buffer, &conf.output).unwrap();
+            let buf = my_qr.convert_to_zx_quad();
+            utils::save_buffer(&buf, &conf.output).unwrap();
         }
-        &_ => image_buf.save(&conf.output).unwrap(),
+        &_ => my_qr.save_to_image(&conf.output).unwrap(),
     }
 }
