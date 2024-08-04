@@ -8,10 +8,9 @@ pub struct MyQrCore {
 }
 
 impl ZxQrCode for MyQrCore {
-    fn convert_to_zx_quad(&self) -> Vec<u8> {
+    fn convert_to_zx_8x32_quad(&self) -> Vec<u8> {
         convert_to_u8::convert(&self.image_buffer)
     }
-
     fn convert_to_image(&self, file_extension: &str) -> Result<Vec<u8>, String> {
         let err_msg = format!("Unknown format {file_extension}");
 
@@ -25,10 +24,6 @@ impl ZxQrCode for MyQrCore {
             Ok(()) => Ok(c.into_inner()),
             Err(e) => Err(e),
         }
-    }
-
-    fn save_to_image(&self, path: &String) -> Result<(), String> {
-        self.image_buffer.save(&path).map_err(|e| e.to_string())
     }
 }
 

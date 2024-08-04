@@ -14,7 +14,7 @@ fn main() {
     let ext = get_extension(&conf.output).unwrap();
     match ext {
         "bin" => {
-            let buf = my_qr.convert_to_zx_quad();
+            let buf = my_qr.convert_to_zx_8x32_quad();
             utils::save_buffer(&buf, &conf.output).unwrap();
         }
         &_ => {
