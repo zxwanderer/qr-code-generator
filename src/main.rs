@@ -18,7 +18,7 @@ fn main() {
             utils::save_buffer(&buf, &conf.output).unwrap();
         }
         &_ => {
-            let buf = my_qr.convert_to_image(&conf.output).unwrap();
+            let buf = my_qr.convert_to_image(ext).unwrap();
             utils::save_buffer(&buf, &conf.output).unwrap();
         }
     }

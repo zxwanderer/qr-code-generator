@@ -1,7 +1,7 @@
 use crate::qr_library::defines::{BytesVector, MyImageBuffer};
 use crate::qr_library::{convert_to_u8, generator, ZxQrCode};
 use image::ImageFormat;
-use std::io::{BufWriter, Cursor};
+use std::io::Cursor;
 
 pub struct MyQrCore {
     image_buffer: MyImageBuffer,
@@ -12,10 +12,10 @@ impl ZxQrCode for MyQrCore {
         convert_to_u8::convert(&self.image_buffer)
     }
 
-    fn convert_to_image(&self, file_format: &String) -> Result<Vec<u8>, String> {
-        let err_msg = format!("Unknown format {file_format}");
+    fn convert_to_image(&self, file_extension: &str) -> Result<Vec<u8>, String> {
+        let err_msg = format!("Unknown format {file_extension}");
 
-        let image_format = ImageFormat::from_path(file_format).expect(&err_msg);
+        let image_format = ImageFormat::from_extension(file_extension).expect(&err_msg);
         let mut c = Cursor::new(Vec::new());
         match self
             .image_buffer
