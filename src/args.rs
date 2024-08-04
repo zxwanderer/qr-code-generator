@@ -1,5 +1,8 @@
-use crate::config::*;
+use crate::utils::get_extension;
 use clap::{arg, Parser};
+
+const DEFAULT_NAME: &str = "qr-code.png";
+const DEFAULT_SIZE: u32 = 32;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
@@ -33,21 +36,25 @@ struct Args {
     size: u32,
 }
 
+pub struct Config {
+    pub output: String,
+    pub url: String,
+    pub size: u32,
+}
+
 pub fn get_config_from_args() -> Result<Config, String> {
     let args = Args::parse();
-    let mode = get_mode_by_path(&args.output).unwrap();
-
     let c = Config {
         output: args.output,
         url: args.url,
         size: args.size,
-        mode,
     };
     Ok(c)
 }
 
 fn output_value_parser(s: &str) -> Result<String, String> {
-    match get_mode_by_path(&s) {
+    let ext = get_extension(s);
+    match ext {
         Ok(_) => Ok(s.to_string()),
         Err(e) => Err(e),
     }
