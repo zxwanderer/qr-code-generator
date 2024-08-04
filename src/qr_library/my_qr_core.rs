@@ -1,4 +1,4 @@
-use crate::qr_library::defines::{BytesVector, MyImageBuffer};
+use crate::qr_library::defines::MyImageBuffer;
 use crate::qr_library::{convert_to_u8, generator, ZxQrCode};
 use image::ImageFormat;
 use std::io::Cursor;
