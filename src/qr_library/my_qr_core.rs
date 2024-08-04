@@ -13,7 +13,9 @@ impl ZxQrCode for MyQrCore {
     }
 
     fn convert_to_image(&self, file_format: &String) -> Result<Vec<u8>, String> {
-        let image_format = ImageFormat::from_extension(file_format).unwrap();
+        let err_msg = format!("Unknown format {file_format}");
+
+        let image_format = ImageFormat::from_path(file_format).expect(&err_msg);
         let mut c = Cursor::new(Vec::new());
         match self
             .image_buffer

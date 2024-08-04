@@ -17,6 +17,9 @@ fn main() {
             let buf = my_qr.convert_to_zx_quad();
             utils::save_buffer(&buf, &conf.output).unwrap();
         }
-        &_ => my_qr.save_to_image(&conf.output).unwrap(),
+        &_ => {
+            let buf = my_qr.convert_to_image(&conf.output).unwrap();
+            utils::save_buffer(&buf, &conf.output).unwrap();
+        }
     }
 }
